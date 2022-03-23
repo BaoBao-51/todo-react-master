@@ -3,24 +3,12 @@ pipeline {
   agent none
 
   environment {
-    DOCKER_IMAGE = "tbao5112k19/node-app:todo-react-master"
+    DOCKER_IMAGE = "tbao5112k19/node-app"
   }
 
   stages {
-    stage("Test") {
-      agent {
-          docker {
-            image 'node:latest'
-            args '-u 0:0 -v /tmp:/root/.cache'
-          }
-      }
-      steps {
-        sh "npm install"
-      }
-    }
-
     stage("build") {
-      agent { node {label 'master'}}
+      agent { node {label 'main'}}
       environment {
         DOCKER_TAG="${GIT_BRANCH.tokenize('/').pop()}-${GIT_COMMIT.substring(0,7)}"
       }
